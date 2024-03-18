@@ -22,7 +22,7 @@ class _QuizAppState extends State<QuizApp> {
   int _currentIndex = 0;
 
   // immutable oldugu icin List.from kullanıp listenin kopyasını olusturarak onun uzerinde işlem yapıyoruz.
-  final List<Question> _questions = List<Question>.from(questions); 
+  final List<Question> _questions = List<Question>.from(questions);
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _QuizAppState extends State<QuizApp> {
     _questions.shuffle(); // Soruları karıştır
   }
 
-  void _checkAnswer(String userAnswer) {
+  void _checkAnswer(dynamic userAnswer) {
     setState(() {
       String correctAnswer = _questions[_currentIndex].correctAnswer;
 
@@ -42,6 +42,8 @@ class _QuizAppState extends State<QuizApp> {
       _nextQuestion();
     });
   }
+
+  
 
   void _nextQuestion() {
     if (_currentIndex == _questions.length - 1) {
@@ -55,6 +57,33 @@ class _QuizAppState extends State<QuizApp> {
     } else {
       setState(() {
         _currentIndex++;
+      });
+    }
+  }
+
+  void updateAnswer(String newAnswer) {
+  String correctAnswer = _questions[_currentIndex].correctAnswer;
+  String userAnswer = _questions[_currentIndex].answers[0]; // Doğru cevabı kontrol etmek için indeks 0 kullanıyoruz
+
+  if (userAnswer == correctAnswer) {
+    if (newAnswer != correctAnswer) {
+      _correctAnswer--;
+      _wrongAnswer++;
+    }
+  } else {
+    if (newAnswer == correctAnswer) {
+      _correctAnswer++;
+      _wrongAnswer--;
+    }
+  }
+  _nextQuestion();
+}
+
+  void _previousQuestion() {
+    if (_currentIndex > 0) {
+      
+      setState(() {
+        _currentIndex--;
       });
     }
   }
@@ -107,7 +136,7 @@ class _QuizAppState extends State<QuizApp> {
                   padding: const EdgeInsets.all(2),
                   width: 350,
                   child: ElevatedButton(
-                      onPressed: () => _checkAnswer(answer),
+                      onPressed: () => updateAnswer(answer),
                       style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: _appButtonBackgroundColor),
@@ -115,12 +144,139 @@ class _QuizAppState extends State<QuizApp> {
                 );
               }).toList(),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                if (_currentIndex > 0)
+                  ElevatedButton(
+                    onPressed: _previousQuestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _appButtonBackgroundColor,
+                    ),
+                    child: const Text('Önceki Soru'),
+                  ),
+                if (_currentIndex < questions.length - 1)
+                  ElevatedButton(
+                    onPressed: _nextQuestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _appButtonBackgroundColor,
+                    ),
+                    child: const Text('Sonraki Soru'),
+                  ),
+              ],
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+// class _QuizAppState extends State<QuizApp> {
+//   int _correctAnswer = 0;
+//   int _wrongAnswer = 0;
+//   int _currentIndex = 0;
+
+//   // immutable oldugu icin List.from kullanıp listenin kopyasını olusturarak onun uzerinde işlem yapıyoruz.
+//   final List<Question> _questions = List<Question>.from(questions);
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _questions.shuffle(); // Soruları karıştır
+//   }
+
+//   void _checkAnswer(String userAnswer) {
+//     setState(() {
+//       String correctAnswer = _questions[_currentIndex].correctAnswer;
+
+//       if (userAnswer == correctAnswer) {
+//         _correctAnswer++;
+//       } else {
+//         _wrongAnswer++;
+//       }
+//       _nextQuestion();
+//     });
+//   }
+
+//   void _nextQuestion() {
+//     if (_currentIndex == _questions.length - 1) {
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => QuizResult(
+//               correctAnswer: _correctAnswer, wrongAnswer: _wrongAnswer),
+//         ),
+//       );
+//     } else {
+//       setState(() {
+//         _currentIndex++;
+//       });
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: _appBackgroundColor,
+//       appBar: AppBar(
+//         title: Text("Quiz", style: GoogleFonts.signika(fontSize: 30)),
+//         shape: const Border(
+//           bottom: BorderSide(
+//             style: BorderStyle.solid,
+//             color: Color.fromARGB(85, 0, 0, 0),
+//           ),
+//         ),
+//         backgroundColor: _appBackgroundColor,
+//         centerTitle: true,
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Transform.translate(
+//               offset: const Offset(0, -40),
+//               child: Container(
+//                 decoration: const BoxDecoration(
+//                     color: Colors.white,
+//                     borderRadius: BorderRadius.all(Radius.circular(15))),
+//                 width: 600,
+//                 height: 200,
+//                 padding: const EdgeInsets.all(20),
+//                 margin: const EdgeInsets.all(30),
+//                 child: Padding(
+//                   padding: const EdgeInsets.only(top: 40),
+//                   child: Text(
+//                     "${_currentIndex + 1}.${_questions[_currentIndex].question}",
+//                     style: GoogleFonts.signika(
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.w500,
+//                         color: const Color.fromARGB(255, 0, 0, 0)),
+//                     textAlign: TextAlign.center,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Column(
+//               children: _questions[_currentIndex].answers.map((answer) {
+//                 return Container(
+//                   padding: const EdgeInsets.all(2),
+//                   width: 350,
+//                   child: ElevatedButton(
+//                       onPressed: () => _checkAnswer(answer),
+//                       style: ElevatedButton.styleFrom(
+//                           foregroundColor: Colors.white,
+//                           backgroundColor: _appButtonBackgroundColor),
+//                       child: Text(answer)),
+//                 );
+//               }).toList(),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class QuizResult extends StatelessWidget {
   final int correctAnswer;
