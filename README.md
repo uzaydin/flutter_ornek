@@ -1,3 +1,2 @@
-# flutter_ornek
-
+# Quiz app
 A new Flutter project.
