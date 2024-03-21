@@ -14,6 +14,7 @@ class Quiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      
       title: 'Quiz Uygulaması',
       home: StartGame(),
     );

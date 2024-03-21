@@ -6,7 +6,6 @@ import 'package:quiz_app/models/questions_model.dart';
 import 'package:quiz_app/config/appColor.dart';
 import 'package:quiz_app/route/result_page.dart';
 
-
 class QuizApp extends StatefulWidget {
   const QuizApp({super.key});
 
@@ -19,14 +18,20 @@ class _QuizAppState extends State<QuizApp> {
   int _wrongAnswer = 0;
   int _currentIndex = 0;
   bool _isEnabled = false;
-
+  List<String> _currentAnswers = [];
   // immutable oldugu icin List.from kullanıp listenin kopyasını olusturarak onun uzerinde işlem yapıyoruz.
   final List<Question> _questions = List<Question>.from(questions);
 
   @override
   void initState() {
     super.initState();
-    _questions.shuffle(); // Soruları karıştır
+    _questions.shuffle(); // Soruları karıştırır
+    _setCurrentAnswers(); // Cevaplari karıştırır
+  }
+
+  void _setCurrentAnswers() {
+    _currentAnswers = List<String>.from(_questions[_currentIndex].answers);
+    _currentAnswers.shuffle(); // Cevapları karıştır
   }
 
   void _checkAnswer(String userAnswer) {
@@ -55,11 +60,18 @@ class _QuizAppState extends State<QuizApp> {
     });
   }
 
+  // List<String> _shuffleAnswers(List<String> answers) {
+  //   List<String> shuffledAnswers = List<String>.from(answers);
+  //   shuffledAnswers.shuffle();
+  //   return shuffledAnswers;
+  // }
+
   void _nextQuestion() {
     setState(() {
       if (_currentIndex < _questions.length - 1) {
         _currentIndex++;
         _isEnabled = false;
+        _setCurrentAnswers();
       }
     });
   }
@@ -67,7 +79,7 @@ class _QuizAppState extends State<QuizApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor(Color.fromRGBO(76, 125, 123, 1)),
+      backgroundColor: AppColor.backgroundColor(),
       appBar: AppBar(
         title: Text("Quiz", style: GoogleFonts.signika(fontSize: 30)),
         shape: const Border(
@@ -76,7 +88,7 @@ class _QuizAppState extends State<QuizApp> {
             color: Color.fromARGB(85, 0, 0, 0),
           ),
         ),
-        backgroundColor: AppColor.backgroundColor(const Color.fromRGBO(76, 125, 123, 1)),
+        backgroundColor: AppColor.backgroundColor(),
         centerTitle: true,
       ),
       body: Center(
@@ -107,7 +119,7 @@ class _QuizAppState extends State<QuizApp> {
               ),
             ),
             Column(
-              children: _questions[_currentIndex].answers.map((answer) {
+              children: _currentAnswers.map((answer) {
                 return Container(
                   padding: const EdgeInsets.all(2),
                   width: 350,
@@ -115,7 +127,7 @@ class _QuizAppState extends State<QuizApp> {
                       onPressed: () => _checkAnswer(answer),
                       style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: AppColor.buttonBackgroundColor(const Color.fromRGBO(248, 198, 96, 1))),
+                          backgroundColor: AppColor.buttonBackgroundColor()),
                       child: Text(answer)),
                 );
               }).toList(),
@@ -130,7 +142,7 @@ class _QuizAppState extends State<QuizApp> {
                         ? _nextQuestion
                         : null, // Buton etkinse _nextQuestion fonksiyonunu çağır
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.buttonBackgroundColor(Color.fromARGB(234, 173, 117, 5)),
+                      backgroundColor: AppColor.buttonBackgroundColor(),
                       foregroundColor: Colors.white,
                     ),
                     child: const Text('Sonraki Soru'),

@@ -15,7 +15,7 @@ const questions = [
   Question(
     question: "Flutter hangi şirket tarafından geliştirilmiştir?",
     answers: ["Microsoft", "Apple", "Google", "Facebook"],
-    correctAnswer: "Microsoft",
+    correctAnswer: "Google",
   ),
   Question(
     question: "Flutter'da UI oluşturmak için hangi terim kullanılır?",

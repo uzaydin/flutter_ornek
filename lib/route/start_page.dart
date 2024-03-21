@@ -10,7 +10,7 @@ class StartGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor(const Color.fromRGBO(76, 125, 123, 1)),
+      backgroundColor: AppColor.backgroundColor(),
       appBar: AppBar(
         title:
             Text("Quiz App", style: GoogleFonts.signika(fontSize: 30)),
@@ -21,15 +21,15 @@ class StartGame extends StatelessWidget {
             color: Color.fromARGB(85, 0, 0, 0),
           ),
         ),
-        backgroundColor: AppColor.backgroundColor(const Color.fromRGBO(76, 125, 123, 1)),
+        backgroundColor: AppColor.backgroundColor(),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 200, // Box genişliğini sabit tut
-              height: 200, // Box yüksekliğini sabit tut
+              width: 200, 
+              height: 200,
               margin: const EdgeInsets.only(top: 250),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -55,7 +55,7 @@ class StartGame extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: AppColor.buttonBackgroundColor(const Color.fromRGBO(248, 198, 96, 1)),
+                  backgroundColor: AppColor.buttonBackgroundColor(),
                 ),
                 child: const Text('Başla'),
               ),

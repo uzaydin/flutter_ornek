@@ -27,9 +27,10 @@ class QuizResult extends StatelessWidget {
                 color: Color.fromRGBO(0, 0, 0, 1),
                 width: 1.2)),
         centerTitle: true,
-        backgroundColor: AppColor.backgroundColor(const Color.fromRGBO(76, 125, 123, 1)),
+        backgroundColor: AppColor.backgroundColor(),
       ),
-      body: Center(
+      body:
+       Center(
         child: SizedBox(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +59,7 @@ class QuizResult extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      ), 
     );
   }
 }
