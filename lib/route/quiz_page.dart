@@ -59,13 +59,6 @@ class _QuizAppState extends State<QuizApp> {
       }
     });
   }
-
-  // List<String> _shuffleAnswers(List<String> answers) {
-  //   List<String> shuffledAnswers = List<String>.from(answers);
-  //   shuffledAnswers.shuffle();
-  //   return shuffledAnswers;
-  // }
-
   void _nextQuestion() {
     setState(() {
       if (_currentIndex < _questions.length - 1) {
